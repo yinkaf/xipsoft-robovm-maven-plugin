@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.kloudtek.idvkey</groupId>
-    <artifactId>kt-robovm-maven-plugin</artifactId>
+    <groupId>com.xipsoft.maven</groupId>
+    <artifactId>xipsoft-robovm-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
@@ -28,7 +28,7 @@
             <version>3.2</version>
             <configuration>
                 <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                <goalPrefix>kt-robovm</goalPrefix>
+                <goalPrefix>xrobovm</goalPrefix>
                 <extractors>
                     <extractor>java-annotations</extractor>
                 </extractors>

@@ -1,4 +1,4 @@
-package com.kloudtek.maven.plugin;
+package com.xipsoft.maven.plugin;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -25,8 +25,11 @@ import java.util.Arrays;
 @Mojo(name="iphone-sim-build", defaultPhase= LifecyclePhase.PACKAGE,
         requiresDependencyResolution= ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class IphoneSimBuildMojo extends AbstractIOSSimulatorMojo {
+
+    public static final DeviceType.DeviceFamily DEVICE_FAMILY = DeviceType.DeviceFamily.iPhone;
+
     public IphoneSimBuildMojo() {
-        super(DeviceType.DeviceFamily.iPhone);
+        super(DEVICE_FAMILY);
     }
 
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -56,18 +59,18 @@ public class IphoneSimBuildMojo extends AbstractIOSSimulatorMojo {
         }
 
         configure(builder).os(os).arch(arch).targetType(targetType);
-        String simPath = System.getProperty("idvkey-sim-path");
-        System.out.println("simPath = " + simPath);
-        if (simPath != null && !simPath.isEmpty()) {
-            File simFile = new File(simPath);
+        String targetPath = System.getProperty("target-path");
+        getLog().info("target-path = " + targetPath);
+        if (targetPath != null && !targetPath.isEmpty()) {
+            File targetFile = new File(targetPath);
             try {
-                FileUtils.deleteDirectory(simFile);
+                FileUtils.deleteDirectory(targetFile);
             } catch (IOException e) {
                 throw new MojoExecutionException(
-                        "Failed to clean output dir " + simPath, e);
+                        "Failed to clean output dir " + targetFile, e);
             }
-            simFile.mkdirs();
-            builder.tmpDir(simFile);
+            targetFile.mkdirs();
+            builder.tmpDir(targetFile);
         }
 //         execute the RoboVM build
 
@@ -83,7 +86,7 @@ public class IphoneSimBuildMojo extends AbstractIOSSimulatorMojo {
 
             // select the device based on the (optional) SDK version and (optional) device type
             DeviceType deviceType = DeviceType.getBestDeviceType(
-                    arch, DeviceType.DeviceFamily.iPhone, deviceName, sdk);
+                    arch, DEVICE_FAMILY, deviceName, sdk);
             launchParameters.setDeviceType(deviceType);
             compiler.launchAsync(launchParameters);
             return compiler;
